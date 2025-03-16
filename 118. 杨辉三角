@@ -1,0 +1,73 @@
+/*
+118. 杨辉三角
+给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。
+在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+
+示例 1:
+输入: numRows = 5
+输出: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+
+示例 2:
+输入: numRows = 1
+输出: [[1]]
+
+提示:
+1 <= numRows <= 30
+*/
+
+/*
+我的题解：
+时间：O(n^2) 空间：O(1)
+
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList();
+        for(int i = 1; i <= numRows ; i++){
+            List<Integer> rowResult = new ArrayList();
+            if(i == 1){
+                rowResult.add(1);
+                result.add(rowResult);
+                continue;
+            }else if(i == 2){
+                rowResult.add(1);
+                rowResult.add(1);
+                result.add(rowResult);
+                continue;
+            }
+
+            List<Integer> lastRowResult = result.get(result.size() -  1);
+            rowResult.add(1);
+            for(int j = 0 ; j < lastRowResult.size() - 1 ; j++){
+                int left = lastRowResult.get(j);
+                int right = lastRowResult.get(j + 1);
+                int mid = left + right;
+                rowResult.add(mid);
+            }
+            rowResult.add(1);
+            
+            result.add(rowResult);
+        }
+        return result;
+    }
+}
+
+官方题解也是相似的思路，不过写的很简洁：
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        for (int i = 0; i < numRows; ++i) {
+            List<Integer> row = new ArrayList<Integer>();
+            for (int j = 0; j <= i; ++j) {
+                if (j == 0 || j == i) {
+                    row.add(1);
+                } else {
+                    row.add(ret.get(i - 1).get(j - 1) + ret.get(i - 1).get(j));
+                }
+            }
+            ret.add(row);
+        }
+        return ret;
+    }
+}
+
+*/
