@@ -1,0 +1,102 @@
+/*
+160. 相交链表
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+题目数据 保证 整个链式结构中不存在环。
+注意，函数返回结果后，链表必须 保持其原始结构 。
+提示：
+listA 中节点数目为 m
+listB 中节点数目为 n
+1 <= m, n <= 3 * 10^4
+1 <= Node.val <= 10^5
+0 <= skipA <= m
+0 <= skipB <= n
+如果 listA 和 listB 没有交点，intersectVal 为 0
+如果 listA 和 listB 有交点，intersectVal == listA[skipA] == listB[skipB]
+ 
+进阶：你能否设计一个时间复杂度 O(m + n) 、仅用 O(1) 内存的解决方案？
+*/
+
+/*
+我的题解：双端队列  t O(m + n + m + n) s O(m + n)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null) return null;
+        Deque<ListNode> queueA = new LinkedList<>();
+        Deque<ListNode> queueB = new LinkedList<>();
+
+        ListNode temp = headA;
+        while(temp != null){
+            queueA.addLast(temp);
+            temp = temp.next;
+        }
+
+        temp = headB;
+        while(temp != null){
+            queueB.addLast(temp);
+            temp = temp.next;
+        }
+
+        if(queueA.getLast() != queueB.getLast()) return null;
+        ListNode result = queueA.getLast();
+        queueA.pollLast();
+        queueB.pollLast();
+
+        while(queueA.isEmpty() != true &&  queueB.isEmpty() != true){
+            if(queueA.getLast() != queueB.getLast()){
+                return result;
+            }
+            result = queueA.getLast();
+            queueA.pollLast();
+            queueB.pollLast();
+        }
+        return result;
+    }
+}
+
+官方题解： 
+哈希 t O(m + n)  s O(m)
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        Set<ListNode> visited = new HashSet<ListNode>();
+        ListNode temp = headA;
+        while (temp != null) {
+            visited.add(temp);
+            temp = temp.next;
+        }
+        temp = headB;
+        while (temp != null) {
+            if (visited.contains(temp)) {
+                return temp;
+            }
+            temp = temp.next;
+        }
+        return null;
+    }
+}
+
+双指针 t O(m + n)  s O(1)
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode pA = headA, pB = headB;
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+        return pA;
+    }
+}
+*/
