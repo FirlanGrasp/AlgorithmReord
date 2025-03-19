@@ -1,0 +1,81 @@
+/*
+189. 轮转数组
+给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
+
+提示：
+1 <= nums.length <= 105
+-2^31 <= nums[i] <= 2^31 - 1
+0 <= k <= 10^5
+
+进阶：
+尽可能想出更多的解决方案，至少有 三种 不同的方法可以解决这个问题。
+你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？
+*/
+
+/*
+我的题解： t O(n) s O(n)
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int size = nums.length;
+
+        k = k%size;
+
+        int first = size - k;
+        int[] remember = new int[k];
+        for(int i = 0 ; i < k ; i++ ){
+            remember[i] = nums[first + i];
+        }
+
+        int cutlast = size - 1;
+        int cutfront = size - k - 1;
+        int num = size - k;
+
+        for(int i = 0 ; i < num; i++){
+            nums[cutlast - i] = nums[cutfront - i];
+        }
+
+        for(int i = 0 ; i < k; i++){
+            nums[i] = remember[i];
+        }
+        
+    }
+}
+
+官方：  t O(n) s O(n)
+拷贝数组
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        int[] newArr = new int[n];
+        for (int i = 0; i < n; ++i) {
+            newArr[(i + k) % n] = nums[i];
+        }
+        System.arraycopy(newArr, 0, nums, 0, n);
+    }
+}
+
+环状替换  t O(n) s O(1)
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+        int count = gcd(k, n);
+        for (int start = 0; start < count; ++start) {
+            int current = start;
+            int prev = nums[start];
+            do {
+                int next = (current + k) % n;
+                int temp = nums[next];
+                nums[next] = prev;
+                prev = temp;
+                current = next;
+            } while (start != current);
+        }
+    }
+
+    public int gcd(int x, int y) {
+        return y > 0 ? gcd(y, x % y) : x;
+    }
+}
+
+*/
